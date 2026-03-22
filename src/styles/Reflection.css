@@ -1,0 +1,163 @@
+.reflection {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: panel-in 0.3s ease;
+}
+
+.reflection__duration {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin: 0;
+    text-align: center;
+}
+
+.reflection__label {
+    font-size: 16px;
+    color: var(--text-primary);
+    margin: 0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.reflection__linked-task {
+    font-size: 12px;
+    color: var(--accent-idle);
+    margin: 0;
+    text-align: center;
+}
+
+.reflection__mood-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.reflection__prompt {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.reflection__moods {
+    display: flex;
+    gap: 8px;
+}
+
+.reflection__mood-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 6px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+}
+
+.reflection__mood-btn:hover {
+    background: var(--bg-surface-hover);
+}
+
+.reflection__mood-btn--selected {
+    border-color: var(--accent-reflecting);
+    background: var(--bg-surface-hover);
+}
+
+.reflection__mood-icon {
+    font-size: 20px;
+}
+
+.reflection__mood-label {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.reflection__mood-btn--selected .reflection__mood-label {
+    color: var(--accent-reflecting);
+}
+
+.reflection__note-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.reflection__note {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+.reflection__note:focus {
+    border-color: var(--accent-reflecting);
+}
+
+.reflection__note::placeholder {
+    color: var(--text-muted);
+}
+
+.reflection__actions {
+    display: flex;
+    gap: 8px;
+}
+
+.reflection__btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+}
+
+.reflection__btn--save {
+    background: var(--accent-reflecting);
+    color: #fff;
+}
+
+.reflection__btn--save:hover {
+    background: #8ec8b0;
+}
+
+.reflection__btn--skip {
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+}
+
+.reflection__btn--skip:hover {
+    background: var(--bg-surface-hover);
+}
+
+.reflection__btn--discard {
+    background: transparent;
+    color: var(--text-muted);
+}
+
+.reflection__btn--discard:hover {
+    color: var(--text-secondary);
+}
+
+.reflection__btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@keyframes panel-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
