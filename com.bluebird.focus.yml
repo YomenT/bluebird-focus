@@ -6,6 +6,7 @@ sdk: org.gnome.Sdk
 
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.rust-stable
+  - org.freedesktop.Sdk.Extension.node22
 
 command: bluebird-focus
 
@@ -23,25 +24,35 @@ finish-args:
   - --talk-name=org.kde.StatusNotifierWatcher
   # Desktop notifications
   - --talk-name=org.freedesktop.Notifications
+  # WebKit DMA-BUF renderer causes issues with some Wayland compositors
+  - --env=WEBKIT_DISABLE_DMABUF_RENDERER=1
 
 modules:
   - name: bluebird-focus
     buildsystem: simple
 
     build-options:
-      append-path: /usr/lib/sdk/rust-stable/bin
+      append-path: /usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/node22/bin
       env:
         CARGO_HOME: /run/build/bluebird-focus/cargo
         CARGO_NET_OFFLINE: 'true'
+        npm_config_cache: /run/build/bluebird-focus/flatpak-node/npm-cache
+        npm_config_offline: 'true'
 
     build-commands:
-      # 1. Build the Tauri/Rust binary (frontend is pre-built and included as a source)
-      - cargo build --release --manifest-path src-tauri/Cargo.toml
+      # 1. Install Node dependencies from vendored cache
+      - npm ci --offline
 
-      # 2. Install the binary
+      # 2. Build the React frontend (outputs to build/)
+      - npm run build
+
+      # 3. Build and bundle via Tauri CLI (properly embeds the frontend)
+      - npm run tauri build -- --no-bundle
+
+      # 4. Install the binary
       - install -Dm755 src-tauri/target/release/bluebird-focus /app/bin/bluebird-focus
 
-      # 3. Install icons
+      # 5. Install icons
       - install -Dm644 src-tauri/icons/32x32.png
           /app/share/icons/hicolor/32x32/apps/com.bluebird.focus.png
       - install -Dm644 src-tauri/icons/128x128.png
@@ -49,7 +60,7 @@ modules:
       - install -Dm644 src-tauri/icons/128x128@2x.png
           /app/share/icons/hicolor/256x256/apps/com.bluebird.focus.png
 
-      # 4. Install desktop entry and AppStream metainfo
+      # 6. Install desktop entry and AppStream metainfo
       - install -Dm644 com.bluebird.focus.desktop
           /app/share/applications/com.bluebird.focus.desktop
       - install -Dm644 com.bluebird.focus.metainfo.xml
@@ -58,12 +69,10 @@ modules:
     sources:
       - type: git
         url: https://github.com/YomenT/bluebird-focus
-        commit: 808ab03dfc25f2e8b1170d2d8665d7ccc8c35324
-
-      # Pre-built React frontend (run `npm run build` locally before building the Flatpak)
-      - type: dir
-        path: build
-        dest: build
+        commit: 46170d8f34f850d3c275035b85da659644c0200f
 
       # Vendored Cargo dependencies
       - cargo-sources.json
+
+      # Vendored npm dependencies
+      - npm-sources.json
