@@ -4,6 +4,8 @@ import {
     signInWithEmailAndPassword,
     sendPasswordResetEmail,
     signOut,
+    setPersistence,
+    inMemoryPersistence,
 } from "firebase/auth"
 
 // Same Firebase project as other Bluebird apps
@@ -19,6 +21,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
+
+// Use in-memory persistence — IndexedDB is unavailable in the WebKit
+// subprocess sandbox inside a Flatpak container.
+setPersistence(auth, inMemoryPersistence)
 
 const loginWithEmailAndPassword = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
