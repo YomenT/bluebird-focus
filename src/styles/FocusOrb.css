@@ -1,0 +1,153 @@
+.focus-cup {
+    position: relative;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform var(--transition);
+}
+
+.focus-cup:hover {
+    transform: scale(1.06);
+}
+
+.focus-cup:active {
+    transform: scale(0.97);
+}
+
+/* Steam area — always reserves space above the cup so layout doesn't shift */
+.focus-cup__steam-area {
+    position: relative;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 3px;
+}
+
+.focus-cup__steam {
+    width: 5px;
+    height: 22px;
+    border-radius: 4px;
+    opacity: 0;
+}
+
+.focus-cup--active .focus-cup__steam {
+    background: linear-gradient(to top, var(--accent-active), transparent);
+}
+
+.focus-cup--active .focus-cup__steam--1 {
+    animation: cup-steam 1.9s ease-in-out infinite 0s;
+}
+.focus-cup--active .focus-cup__steam--2 {
+    animation: cup-steam 1.9s ease-in-out infinite 0.63s;
+}
+.focus-cup--active .focus-cup__steam--3 {
+    animation: cup-steam 1.9s ease-in-out infinite 1.26s;
+}
+
+@keyframes cup-steam {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scaleX(1);
+    }
+    20% {
+        opacity: 0.75;
+    }
+    80% {
+        opacity: 0.2;
+        transform: translateY(-18px) scaleX(1.5);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-28px) scaleX(1.6);
+    }
+}
+
+/* Cup body + handle wrapper — width matches cup body only so flex centers the cup, not the cup+handle */
+.focus-cup__cup {
+    position: relative;
+    width: 48px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.focus-cup__cup-body {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 48px;
+    height: 40px;
+    background: var(--bg-surface);
+    border: 2.5px solid var(--accent-idle);
+    border-top: none;
+    border-radius: 0 0 24px 24px;
+    box-sizing: border-box;
+    transition: border-color var(--transition-slow);
+}
+
+.focus-cup--active .focus-cup__cup-body {
+    border-color: var(--accent-active);
+}
+
+.focus-cup--reflecting .focus-cup__cup-body {
+    border-color: var(--accent-reflecting);
+}
+
+.focus-cup__cup-handle {
+    position: absolute;
+    right: -14px;
+    top: 8px;
+    width: 14px;
+    height: 21px;
+    border: 2.5px solid var(--accent-idle);
+    border-left: none;
+    border-radius: 0 14px 14px 0;
+    background: transparent;
+    transition: border-color var(--transition-slow);
+}
+
+.focus-cup--active .focus-cup__cup-handle {
+    border-color: var(--accent-active);
+}
+
+.focus-cup--reflecting .focus-cup__cup-handle {
+    border-color: var(--accent-reflecting);
+}
+
+/* Saucer */
+.focus-cup__saucer {
+    width: 64px;
+    height: 7px;
+    background: var(--accent-idle);
+    border-radius: 0 0 8px 8px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    opacity: 0.75;
+    transition: background var(--transition-slow);
+}
+
+.focus-cup--active .focus-cup__saucer {
+    background: var(--accent-active);
+}
+
+.focus-cup--reflecting .focus-cup__saucer {
+    background: var(--accent-reflecting);
+}
+
+/* Elapsed time shown on hover when active */
+.focus-cup__elapsed {
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent-active);
+    white-space: nowrap;
+}

@@ -1,38 +1,98 @@
-.App {
-  text-align: center;
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--bg-primary);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app--loading {
+    justify-content: center;
+    align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.app__loading-orb {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-idle), transparent);
+    animation: orb-breathe 3s ease-in-out infinite;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.app--login {
+    justify-content: center;
+    align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+/* Top bar */
+.app__topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    -webkit-app-region: drag; /* Allow window dragging from topbar */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app__brand {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.app__topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    -webkit-app-region: no-drag;
+}
+
+.app__journal-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+}
+
+.app__journal-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface);
+}
+
+.app__journal-btn--active {
+    color: var(--accent-idle);
+}
+
+/* Main content area */
+.app__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.app__orb-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.app__orb-hint {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+    transition: opacity var(--transition);
+}
+
+@keyframes orb-breathe {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
 }

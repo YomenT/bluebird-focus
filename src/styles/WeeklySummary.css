@@ -1,0 +1,38 @@
+.weekly-summary {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.weekly-summary__title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.weekly-summary__stats {
+    display: flex;
+    gap: 20px;
+}
+
+.weekly-summary__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.weekly-summary__stat-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.weekly-summary__stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+}
