@@ -69,8 +69,7 @@ modules:
       # Run: git rev-parse HEAD  in the bluebird-focus repo to get the hash.
       - type: git
         url: https://github.com/YomenT/bluebird-focus
-        branch: main
-        # commit: <paste commit hash here>
+        commit: 808ab03dfc25f2e8b1170d2d8665d7ccc8c35324
 
       # Vendored Cargo dependencies (offline build).
       # Generate with:
