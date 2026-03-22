@@ -6,7 +6,6 @@ sdk: org.gnome.Sdk
 
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.rust-stable
-  - org.freedesktop.Sdk.Extension.node22
 
 command: bluebird-focus
 
@@ -30,27 +29,19 @@ modules:
     buildsystem: simple
 
     build-options:
-      append-path: /usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/node22/bin
+      append-path: /usr/lib/sdk/rust-stable/bin
       env:
         CARGO_HOME: /run/build/bluebird-focus/cargo
         CARGO_NET_OFFLINE: 'true'
-        npm_config_cache: /run/build/bluebird-focus/npm-cache
-        npm_config_offline: 'true'
 
     build-commands:
-      # 1. Install Node dependencies from vendored cache
-      - npm ci --offline
-
-      # 2. Build the React frontend (outputs to build/)
-      - npm run build
-
-      # 3. Build the Tauri/Rust binary (embeds the frontend via frontendDist)
+      # 1. Build the Tauri/Rust binary (frontend is pre-built and included as a source)
       - cargo build --release --manifest-path src-tauri/Cargo.toml
 
-      # 4. Install the binary
+      # 2. Install the binary
       - install -Dm755 src-tauri/target/release/bluebird-focus /app/bin/bluebird-focus
 
-      # 5. Install icons
+      # 3. Install icons
       - install -Dm644 src-tauri/icons/32x32.png
           /app/share/icons/hicolor/32x32/apps/com.bluebird.focus.png
       - install -Dm644 src-tauri/icons/128x128.png
@@ -58,27 +49,21 @@ modules:
       - install -Dm644 src-tauri/icons/128x128@2x.png
           /app/share/icons/hicolor/256x256/apps/com.bluebird.focus.png
 
-      # 6. Install desktop entry and AppStream metainfo
+      # 4. Install desktop entry and AppStream metainfo
       - install -Dm644 com.bluebird.focus.desktop
           /app/share/applications/com.bluebird.focus.desktop
       - install -Dm644 com.bluebird.focus.metainfo.xml
           /app/share/metainfo/com.bluebird.focus.metainfo.xml
 
     sources:
-      # App source — pin to a specific commit before submitting to Flathub.
-      # Run: git rev-parse HEAD  in the bluebird-focus repo to get the hash.
       - type: git
         url: https://github.com/YomenT/bluebird-focus
         commit: 808ab03dfc25f2e8b1170d2d8665d7ccc8c35324
 
-      # Vendored Cargo dependencies (offline build).
-      # Generate with:
-      #   python3 flatpak-cargo-generator.py src-tauri/Cargo.lock -o cargo-sources.json
-      # Tool: https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo
-      - cargo-sources.json
+      # Pre-built React frontend (run `npm run build` locally before building the Flatpak)
+      - type: dir
+        path: build
+        dest: build
 
-      # Vendored npm dependencies (offline build).
-      # Generate with:
-      #   flatpak-node-generator npm package-lock.json -o npm-sources.json
-      # Tool: https://github.com/flatpak/flatpak-builder-tools/tree/master/node
-      - npm-sources.json
+      # Vendored Cargo dependencies
+      - cargo-sources.json
