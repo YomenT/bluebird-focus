@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Bluebird Focus
-Comment=A calm deep work companion
-Exec=bluebird-focus
-Icon=com.bluebird.focus
-Type=Application
-Categories=Utility;Office;
-Keywords=focus;productivity;timer;deep work;pomodoro;journaling;
-StartupWMClass=bluebird-focus
