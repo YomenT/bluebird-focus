@@ -44,21 +44,19 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Build AppImage (tag release)
+      - name: Build AppImage
+        run: npx tauri build --bundles appimage
+        env:
+          REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
+
+      - name: Package release archive
+        run: bash package-release.sh
+
+      - name: Publish release
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: tauri-apps/tauri-action@v0
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: bluebird-focus_*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
-        with:
-          tagName: ${{ github.ref_name }}
-          releaseName: Bluebird Focus ${{ github.ref_name }}
-          releaseBody: ''
-          releaseDraft: true
-          includeDebug: false
-
-      - name: Build AppImage (manual test)
-        if: github.event_name == 'workflow_dispatch'
-        run: npx tauri build
-        env:
-          REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
