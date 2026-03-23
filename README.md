@@ -15,7 +15,7 @@ Pre-built binaries are available on the [Releases](https://github.com/YomenT/blu
 
 ### Option 1 — AppImage (recommended, no install needed)
 
-1. Download `bluebird-focus_0.1.0_linux.tar.gz` from the [latest release](https://github.com/YomenT/bluebird-focus/releases/latest).
+1. Download `bluebird-focus_0.1.0_linux.tar.gz` from the [repository](https://github.com/YomenT/bluebird-focus/blob/main/bluebird-focus_0.1.0_linux.tar.gz).
 2. Extract the archive:
    ```bash
    tar -xzf bluebird-focus_0.1.0_linux.tar.gz
