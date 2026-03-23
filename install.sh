@@ -13,7 +13,12 @@ INSTALL_PATH="$BIN_DIR/bluebird-focus"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "Installing $APP_NAME..."
+if [ -f "$INSTALL_PATH" ]; then
+    ACTION="Updating"
+else
+    ACTION="Installing"
+fi
+echo "$ACTION $APP_NAME..."
 
 # Check required files are present
 if [ ! -f "$SCRIPT_DIR/$APPIMAGE" ]; then
@@ -54,5 +59,5 @@ if command -v gtk-update-icon-cache &> /dev/null; then
 fi
 
 echo ""
-echo "$APP_NAME installed successfully."
+echo "$APP_NAME ${ACTION,,} successfully."
 echo "You can launch it from your application menu or by running: bluebird-focus"
