@@ -1,6 +1,6 @@
 // Firebase Auth via REST API — avoids the Firebase JS SDK's gapi/iframe
 // machinery which is blocked when the app origin is tauri://localhost.
-const API_KEY = 'REMOVED_API_KEY';
+const API_KEY = process.env.REACT_APP_FIREBASE_API_KEY;
 const SIGN_IN_URL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`;
 const LOOKUP_URL  = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`;
 const REFRESH_URL = `https://securetoken.googleapis.com/v1/token?key=${API_KEY}`;
