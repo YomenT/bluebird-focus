@@ -16,7 +16,6 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2.5.6", features = [] }
 
 [features]
-default = ["tray"]
 tray = ["tauri/tray-icon"]
 
 [dependencies]
