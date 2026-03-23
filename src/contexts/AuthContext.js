@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { auth } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { auth, onAuthStateChanged } from '../firebase';
 
 const API_BASE = 'https://bluebirddocumentationadmin.pythonanywhere.com';
 
