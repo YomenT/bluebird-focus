@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# Bluebird Focus
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A minimal, distraction-free focus timer for your desktop — built with React and Tauri.
 
-## Available Scripts
+## Download
 
-In the project directory, you can run:
+Pre-built binaries are available on the [Releases](https://github.com/YomenT/bluebird-focus/releases) page.
 
-### `npm start`
+| Platform | Status |
+|----------|--------|
+| Linux    | ✅ Available |
+| Windows  | 🔜 Coming Soon |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation (Linux)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Option 1 — AppImage (recommended, no install needed)
 
-### `npm test`
+1. Download `bluebird-focus_0.1.0_linux.tar.gz` from the [latest release](https://github.com/YomenT/bluebird-focus/releases/latest).
+2. Extract the archive:
+   ```bash
+   tar -xzf bluebird-focus_0.1.0_linux.tar.gz
+   ```
+3. Make the AppImage executable and run it:
+   ```bash
+   chmod +x bluebird-focus_*.AppImage
+   ./bluebird-focus_*.AppImage
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Option 2 — install.sh script
 
-### `npm run build`
+The repository includes an `install.sh` convenience script:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+tar -xzf bluebird-focus_0.1.0_linux.tar.gz
+cd bluebird-focus
+chmod +x install.sh
+./install.sh
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Building from source
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
 
-### `npm run eject`
+- [Node.js](https://nodejs.org/) 18+
+- [Rust](https://www.rust-lang.org/tools/install) (stable)
+- Tauri CLI and system dependencies — see the [Tauri prerequisites guide](https://tauri.app/start/prerequisites/)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Steps
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/YomenT/bluebird-focus.git
+cd bluebird-focus
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+npm install
+npm run build          # Build the React frontend
+npm run tauri:build    # Package the Tauri desktop app
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The packaged output will be in `src-tauri/target/release/bundle/`.
 
-## Learn More
+For development (hot-reload):
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm run dev
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[MIT](LICENSE)
