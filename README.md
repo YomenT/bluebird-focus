@@ -6,63 +6,45 @@ A minimal, distraction-free focus timer for your desktop — built with React an
 
 Pre-built binaries are available on the [Releases](https://github.com/YomenT/bluebird-focus/releases) page.
 
+> **Note:** You must install from the Releases page. Cloning and building from source will not include the Firebase API key required for the app to function.
+
 | Platform | Status |
 |----------|--------|
 | Linux    | ✅ Available |
-| Windows  | 🔜 Coming Soon |
+| Windows  | ✅ Available |
 
 ## Installation (Linux)
-
-### Option 1 — AppImage (recommended, no install needed)
 
 1. Download `bluebird-focus_0.1.0_linux.tar.gz` from the [Releases](https://github.com/YomenT/bluebird-focus/releases/latest) page.
 2. Extract the archive:
    ```bash
    tar -xzf bluebird-focus_0.1.0_linux.tar.gz
-   ```
-3. Make the AppImage executable and run it:
-   ```bash
-   chmod +x bluebird-focus_*.AppImage
-   ./bluebird-focus_*.AppImage
+   cd bluebird-focus
    ```
 
-### Option 2 — install.sh script
-
-The repository includes an `install.sh` convenience script:
+### Option 1 — Run directly (no install)
 
 ```bash
-tar -xzf bluebird-focus_0.1.0_linux.tar.gz
-cd bluebird-focus
+chmod +x bluebird-focus_*.AppImage
+./bluebird-focus_*.AppImage
+```
+
+### Option 2 — Install system-wide (recommended)
+
+The included `install.sh` script installs the app to `~/.local/bin` and adds it to your application launcher. Running it again on a newer release will update the existing installation.
+
+```bash
 chmod +x install.sh
 ./install.sh
 ```
 
-## Building from source
+## Installation (Windows)
 
-### Prerequisites
+1. Download `bluebird-focus_0.1.0_windows.zip` from the [Releases](https://github.com/YomenT/bluebird-focus/releases/latest) page.
+2. Extract the zip and run the `.exe` installer.
+3. Follow the setup wizard.
 
-- [Node.js](https://nodejs.org/) 18+
-- [Rust](https://www.rust-lang.org/tools/install) (stable)
-- Tauri CLI and system dependencies — see the [Tauri prerequisites guide](https://tauri.app/start/prerequisites/)
-
-### Steps
-
-```bash
-git clone https://github.com/YomenT/bluebird-focus.git
-cd bluebird-focus
-
-npm install
-npm run build          # Build the React frontend
-npm run tauri:build    # Package the Tauri desktop app
-```
-
-The packaged output will be in `src-tauri/target/release/bundle/`.
-
-For development (hot-reload):
-
-```bash
-npm run dev
-```
+To update to a newer version, simply download and run the new installer — it will upgrade the existing installation automatically. You do not need to uninstall first.
 
 ## License
 
