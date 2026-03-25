@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useFocus, MOODS } from '../contexts/FocusContext';
 import { useAuth } from '../contexts/AuthContext';
 import WeeklySummary from './WeeklySummary';
+import FocusHeatmap from './FocusHeatmap';
+import InsightCards from './InsightCards';
 import '../styles/Journal.css';
 
 function Journal({ onBack }) {
@@ -80,6 +82,8 @@ function Journal({ onBack }) {
                 </div>
             ) : (
                 <div className="journal__content">
+                    <FocusHeatmap />
+                    <InsightCards />
                     <WeeklySummary />
 
                     <div className="journal__timeline">

@@ -1,0 +1,122 @@
+.focus-heatmap {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.focus-heatmap__title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.focus-heatmap__grid-wrapper {
+    display: flex;
+    gap: 4px;
+    align-items: flex-start;
+}
+
+.focus-heatmap__day-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex-shrink: 0;
+}
+
+.focus-heatmap__day-label {
+    font-size: 9px;
+    color: var(--text-muted);
+    width: 10px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Show only Mon, Wed, Fri — hide Sun, Tue, Thu, Sat */
+.focus-heatmap__day-label:nth-child(1),
+.focus-heatmap__day-label:nth-child(3),
+.focus-heatmap__day-label:nth-child(5),
+.focus-heatmap__day-label:nth-child(7) {
+    color: transparent;
+}
+
+.focus-heatmap__grid {
+    display: flex;
+    gap: 3px;
+}
+
+.focus-heatmap__week {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.focus-heatmap__cell {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    cursor: default;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+}
+
+.focus-heatmap__cell:hover:not(.focus-heatmap__cell--future) {
+    outline: 1px solid var(--accent-idle);
+    outline-offset: 1px;
+    opacity: 0.85;
+}
+
+/* Intensity levels — blue palette matching the app */
+.focus-heatmap__cell--level-0 {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+}
+
+.focus-heatmap__cell--level-1 { background: #1e3a5f; }
+.focus-heatmap__cell--level-2 { background: #2e5580; }
+.focus-heatmap__cell--level-3 { background: var(--accent-idle); }
+.focus-heatmap__cell--level-4 { background: #8eb8e0; }
+
+.focus-heatmap__cell--future {
+    background: transparent !important;
+    border: 1px dashed var(--border) !important;
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+.focus-heatmap__footer {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.focus-heatmap__hover-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.focus-heatmap__legend {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.focus-heatmap__legend-text {
+    font-size: 9px;
+    color: var(--text-muted);
+}
+
+.focus-heatmap__legend-cell {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    pointer-events: none;
+}
