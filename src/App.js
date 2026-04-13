@@ -17,10 +17,23 @@ const VIEWS = {
     JOURNAL: 'journal',
 };
 
+const ZEN_WELCOME_MESSAGES = [
+    'Find your calm.',
+    'Settle in. The work will wait.',
+    'A quiet moment before the focus.',
+    'Breathe. Begin when you\'re ready.',
+    'You showed up. That\'s the hardest part.',
+    'Stillness first. Focus will follow.',
+];
+
 function FocusApp() {
     const { user, loading } = useAuth();
     const { isActive, showReflection } = useFocus();
     const [view, setView] = useState(VIEWS.CLOSED);
+    const [showSplash, setShowSplash] = useState(true);
+    const splashMessage = React.useRef(
+        ZEN_WELCOME_MESSAGES[Math.floor(Math.random() * ZEN_WELCOME_MESSAGES.length)]
+    );
 
     // After reflection is dismissed (save/skip/discard), close the panel
     React.useEffect(() => {
@@ -63,6 +76,11 @@ function FocusApp() {
 
     return (
         <div className="app">
+            {showSplash && (
+                <div className="app__splash" onAnimationEnd={() => setShowSplash(false)}>
+                    <p className="app__splash-message">{splashMessage.current}</p>
+                </div>
+            )}
             <div className="app__topbar">
                 <span className="app__brand">Bluebird Focus</span>
                 <div className="app__topbar-actions">

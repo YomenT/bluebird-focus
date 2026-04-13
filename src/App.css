@@ -96,3 +96,31 @@
     0%, 100% { opacity: 0.6; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.05); }
 }
+
+/* Zen splash screen */
+.app__splash {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-primary);
+    pointer-events: none;
+    animation: splash-fade 3.2s ease forwards;
+}
+
+.app__splash-message {
+    font-size: 15px;
+    color: var(--text-secondary);
+    letter-spacing: 0.4px;
+    margin: 0;
+    font-style: italic;
+}
+
+@keyframes splash-fade {
+    0%   { opacity: 0; }
+    12%  { opacity: 1; }
+    72%  { opacity: 1; }
+    100% { opacity: 0; }
+}

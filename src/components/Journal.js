@@ -1,10 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useFocus, MOODS } from '../contexts/FocusContext';
 import { useAuth } from '../contexts/AuthContext';
 import WeeklySummary from './WeeklySummary';
 import FocusHeatmap from './FocusHeatmap';
 import InsightCards from './InsightCards';
 import '../styles/Journal.css';
+
+const REST_MESSAGES = [
+    "You've been putting in real work lately. It's good to take a break.",
+    "Deep focus takes energy — make sure rest is part of the routine too.",
+    "You're on a roll. Don't forget to step away and breathe.",
+];
+
+const RETURN_MESSAGES = [
+    "It's been a while. Even a short session can help you find your rhythm.",
+    "Time to get back into gear. One session at a time.",
+    "The orb is waiting — whenever you're ready.",
+];
 
 function Journal({ onBack }) {
     const { sessions, sessionsLoading, loadSessions, formatDuration } = useFocus();
@@ -31,6 +43,22 @@ function Journal({ onBack }) {
         const mood = MOODS.find(m => m.key === moodKey);
         return mood ? mood.icon : '';
     };
+
+    const zenMessage = useMemo(() => {
+        if (!sessions.length) return null;
+        const now = Date.now();
+        const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+        const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+        const recentCount = sessions.filter(s => now - new Date(s.started_at) < threeDaysMs).length;
+        const weekCount = sessions.filter(s => now - new Date(s.started_at) < sevenDaysMs).length;
+        if (recentCount >= 3) {
+            return REST_MESSAGES[Math.floor(Math.random() * REST_MESSAGES.length)];
+        }
+        if (weekCount === 0) {
+            return RETURN_MESSAGES[Math.floor(Math.random() * RETURN_MESSAGES.length)];
+        }
+        return null;
+    }, [sessions]);
 
     const handleDelete = async (sessionId) => {
         setDeletingId(sessionId);
@@ -85,6 +113,10 @@ function Journal({ onBack }) {
                     <FocusHeatmap />
                     <InsightCards />
                     <WeeklySummary />
+
+                    {zenMessage && (
+                        <p className="journal__zen">{zenMessage}</p>
+                    )}
 
                     <div className="journal__timeline">
                         {Object.entries(groupedByDate).map(([date, daySessions]) => (
