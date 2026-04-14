@@ -6,6 +6,7 @@ import BeginSession from './components/BeginSession';
 import ActiveSession from './components/ActiveSession';
 import Reflection from './components/Reflection';
 import Journal from './components/Journal';
+import NotificationSettings from './components/NotificationSettings';
 import Login from './components/Login';
 import UserMenu from './components/UserMenu';
 import './App.css';
@@ -15,6 +16,7 @@ const VIEWS = {
     BEGIN: 'begin',
     ACTIVE: 'active',
     JOURNAL: 'journal',
+    NOTIFICATIONS: 'notifications',
 };
 
 const ZEN_WELCOME_MESSAGES = [
@@ -73,6 +75,7 @@ function FocusApp() {
     const closePanel = () => setView(VIEWS.CLOSED);
 
     const isJournalView = view === VIEWS.JOURNAL;
+    const isNotificationsView = view === VIEWS.NOTIFICATIONS;
 
     return (
         <div className="app">
@@ -85,11 +88,18 @@ function FocusApp() {
                 <span className="app__brand">Bluebird Focus</span>
                 <div className="app__topbar-actions">
                     <button
-                        className={`app__journal-btn ${isJournalView ? 'app__journal-btn--active' : ''}`}
+                        className={`app__topbar-btn ${isJournalView ? 'app__topbar-btn--active' : ''}`}
                         onClick={() => setView(isJournalView ? VIEWS.CLOSED : VIEWS.JOURNAL)}
                         title="Focus Journal"
                     >
                         ☰
+                    </button>
+                    <button
+                        className={`app__topbar-btn ${isNotificationsView ? 'app__topbar-btn--active' : ''}`}
+                        onClick={() => setView(isNotificationsView ? VIEWS.CLOSED : VIEWS.NOTIFICATIONS)}
+                        title="Notification Settings"
+                    >
+                        🔔
                     </button>
                     <UserMenu />
                 </div>
@@ -98,6 +108,8 @@ function FocusApp() {
             <div className="app__main">
                 {isJournalView ? (
                     <Journal onBack={closePanel} />
+                ) : isNotificationsView ? (
+                    <NotificationSettings onBack={closePanel} />
                 ) : showReflection ? (
                     <Reflection />
                 ) : view === VIEWS.BEGIN ? (

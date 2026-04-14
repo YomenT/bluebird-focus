@@ -47,7 +47,7 @@
     -webkit-app-region: no-drag;
 }
 
-.app__journal-btn {
+.app__topbar-btn {
     background: none;
     border: none;
     color: var(--text-secondary);
@@ -58,12 +58,12 @@
     transition: color var(--transition), background var(--transition);
 }
 
-.app__journal-btn:hover {
+.app__topbar-btn:hover {
     color: var(--text-primary);
     background: var(--bg-surface);
 }
 
-.app__journal-btn--active {
+.app__topbar-btn--active {
     color: var(--accent-idle);
 }
 
