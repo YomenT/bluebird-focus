@@ -31,9 +31,16 @@ export function FocusProvider({ children }) {
     const [pendingSession, setPendingSession] = useState(null);
     const [saving, setSaving] = useState(false);
 
-    // Session history (loaded from backend)
+    // Session history (loaded from backend, paginated)
     const [sessions, setSessions] = useState([]);
     const [sessionsLoading, setSessionsLoading] = useState(false);
+    const [sessionsLoadingMore, setSessionsLoadingMore] = useState(false);
+    const [sessionsHasMore, setSessionsHasMore] = useState(false);
+    const [sessionsPage, setSessionsPage] = useState(1);
+
+    // Streaks
+    const [streaks, setStreaks] = useState([]);
+    const [streaksLoading, setStreaksLoading] = useState(false);
 
     // Settings
     const [settings, setSettings] = useState({
@@ -54,6 +61,56 @@ export function FocusProvider({ children }) {
         }
         return () => clearInterval(timerRef.current);
     }, [isActive, sessionStart]);
+
+    // Load session history — fetches page 1 and resets pagination state
+    const loadSessions = useCallback(async () => {
+        setSessionsLoading(true);
+        try {
+            const response = await apiCall('/focus/sessions/?page=1');
+            if (response.ok) {
+                const data = await response.json();
+                setSessions(data.results);
+                setSessionsHasMore(data.has_more);
+                setSessionsPage(1);
+            }
+        } catch (err) {
+            console.error('Failed to load sessions:', err);
+        }
+        setSessionsLoading(false);
+    }, [apiCall]);
+
+    // Append the next page of sessions
+    const loadMoreSessions = useCallback(async (currentPage) => {
+        setSessionsLoadingMore(true);
+        const nextPage = currentPage + 1;
+        try {
+            const response = await apiCall(`/focus/sessions/?page=${nextPage}`);
+            if (response.ok) {
+                const data = await response.json();
+                setSessions(prev => [...prev, ...data.results]);
+                setSessionsHasMore(data.has_more);
+                setSessionsPage(nextPage);
+            }
+        } catch (err) {
+            console.error('Failed to load more sessions:', err);
+        }
+        setSessionsLoadingMore(false);
+    }, [apiCall]);
+
+    // Load streaks — declared before saveSession so it can appear in its dep array
+    const loadStreaks = useCallback(async () => {
+        setStreaksLoading(true);
+        try {
+            const response = await apiCall('/focus/streaks/');
+            if (response.ok) {
+                const data = await response.json();
+                setStreaks(data);
+            }
+        } catch (err) {
+            console.error('Failed to load streaks:', err);
+        }
+        setStreaksLoading(false);
+    }, [apiCall]);
 
     // Begin a focus session
     const beginSession = useCallback((label = '', linkedTaskId = null, linkedTaskLabel = '') => {
@@ -110,6 +167,7 @@ export function FocusProvider({ children }) {
             });
             if (response.ok) {
                 const saved = await response.json();
+                // Prepend to the in-memory list so the journal reflects it immediately
                 setSessions(prev => [saved, ...prev]);
             }
         } catch (err) {
@@ -119,7 +177,12 @@ export function FocusProvider({ children }) {
         setSaving(false);
         setPendingSession(null);
         setShowReflection(false);
-    }, [pendingSession, apiCall]);
+
+        // Refresh streak counts since the backend updates them on session save
+        if (streaks.length > 0) {
+            loadStreaks();
+        }
+    }, [pendingSession, apiCall, streaks.length, loadStreaks]);
 
     // Skip reflection and save with no mood/note
     const skipReflection = useCallback(() => {
@@ -132,19 +195,36 @@ export function FocusProvider({ children }) {
         setShowReflection(false);
     }, []);
 
-    // Load session history
-    const loadSessions = useCallback(async () => {
-        setSessionsLoading(true);
+    // Create a streak
+    const createStreak = useCallback(async (streakData) => {
         try {
-            const response = await apiCall('/focus/sessions/');
+            const response = await apiCall('/focus/streaks/create/', {
+                method: 'POST',
+                body: JSON.stringify(streakData),
+            });
             if (response.ok) {
-                const data = await response.json();
-                setSessions(data);
+                const created = await response.json();
+                setStreaks(prev => [created, ...prev]);
+                return created;
             }
         } catch (err) {
-            console.error('Failed to load sessions:', err);
+            console.error('Failed to create streak:', err);
         }
-        setSessionsLoading(false);
+        return null;
+    }, [apiCall]);
+
+    // Delete a streak
+    const deleteStreak = useCallback(async (streakId) => {
+        try {
+            const response = await apiCall(`/focus/streaks/${streakId}/delete/`, { method: 'DELETE' });
+            if (response.ok || response.status === 204) {
+                setStreaks(prev => prev.filter(s => s.id !== streakId));
+                return true;
+            }
+        } catch (err) {
+            console.error('Failed to delete streak:', err);
+        }
+        return false;
     }, [apiCall]);
 
     // Search tasks from BBTM
@@ -217,10 +297,21 @@ export function FocusProvider({ children }) {
         // History
         sessions,
         sessionsLoading,
+        sessionsLoadingMore,
+        sessionsHasMore,
+        sessionsPage,
         loadSessions,
+        loadMoreSessions,
 
         // Tasks
         searchTasks,
+
+        // Streaks
+        streaks,
+        streaksLoading,
+        loadStreaks,
+        createStreak,
+        deleteStreak,
 
         // Settings
         settings,

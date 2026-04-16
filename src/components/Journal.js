@@ -19,7 +19,16 @@ const RETURN_MESSAGES = [
 ];
 
 function Journal({ onBack }) {
-    const { sessions, sessionsLoading, loadSessions, formatDuration } = useFocus();
+    const {
+        sessions,
+        sessionsLoading,
+        sessionsLoadingMore,
+        sessionsHasMore,
+        sessionsPage,
+        loadSessions,
+        loadMoreSessions,
+        formatDuration,
+    } = useFocus();
     const { apiCall } = useAuth();
     const [deletingId, setDeletingId] = useState(null);
 
@@ -160,6 +169,23 @@ function Journal({ onBack }) {
                             </div>
                         ))}
                     </div>
+
+                    {sessionsHasMore && (
+                        <button
+                            className="journal__load-more"
+                            onClick={() => loadMoreSessions(sessionsPage)}
+                            disabled={sessionsLoadingMore}
+                        >
+                            {sessionsLoadingMore ? (
+                                <span className="journal__load-more-loading">
+                                    <span className="journal__load-more-dot" />
+                                    Loading…
+                                </span>
+                            ) : (
+                                'Load more'
+                            )}
+                        </button>
+                    )}
                 </div>
             )}
         </div>

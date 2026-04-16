@@ -6,6 +6,7 @@ import BeginSession from './components/BeginSession';
 import ActiveSession from './components/ActiveSession';
 import Reflection from './components/Reflection';
 import Journal from './components/Journal';
+import Streaks from './components/Streaks';
 import NotificationSettings from './components/NotificationSettings';
 import Login from './components/Login';
 import UserMenu from './components/UserMenu';
@@ -16,6 +17,7 @@ const VIEWS = {
     BEGIN: 'begin',
     ACTIVE: 'active',
     JOURNAL: 'journal',
+    STREAKS: 'streaks',
     NOTIFICATIONS: 'notifications',
 };
 
@@ -75,6 +77,7 @@ function FocusApp() {
     const closePanel = () => setView(VIEWS.CLOSED);
 
     const isJournalView = view === VIEWS.JOURNAL;
+    const isStreaksView = view === VIEWS.STREAKS;
     const isNotificationsView = view === VIEWS.NOTIFICATIONS;
 
     return (
@@ -95,6 +98,13 @@ function FocusApp() {
                         ☰
                     </button>
                     <button
+                        className={`app__topbar-btn ${isStreaksView ? 'app__topbar-btn--active' : ''}`}
+                        onClick={() => setView(isStreaksView ? VIEWS.CLOSED : VIEWS.STREAKS)}
+                        title="Streaks"
+                    >
+                        🔥
+                    </button>
+                    <button
                         className={`app__topbar-btn ${isNotificationsView ? 'app__topbar-btn--active' : ''}`}
                         onClick={() => setView(isNotificationsView ? VIEWS.CLOSED : VIEWS.NOTIFICATIONS)}
                         title="Notification Settings"
@@ -108,6 +118,8 @@ function FocusApp() {
             <div className="app__main">
                 {isJournalView ? (
                     <Journal onBack={closePanel} />
+                ) : isStreaksView ? (
+                    <Streaks onBack={closePanel} />
                 ) : isNotificationsView ? (
                     <NotificationSettings onBack={closePanel} />
                 ) : showReflection ? (
